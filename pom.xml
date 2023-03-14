@@ -85,6 +85,11 @@
 			<artifactId>springdoc-openapi-data-rest</artifactId>
 			<version>1.6.4</version>
 		</dependency>
+	<!-- Spring security-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
