@@ -25,6 +25,11 @@ public class UserService {
     private  ModelMapper modelMapper;
     private UserRepository userRepository;
 
+
+    public UserEntity searchByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
     public List<UserDto> findAllUsers() {
         var userEntityList = new ArrayList<>(userRepository.findAll());
 

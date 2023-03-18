@@ -1,6 +1,8 @@
 package com.example.springprojectfrombook.config;
 
 
+import com.example.springprojectfrombook.jwt.filters.JwtRequestFilter;
+import com.example.springprojectfrombook.jwt.services.ApplicationUserDetailsService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,16 +13,22 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @AllArgsConstructor
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private final ApplicationUserDetailsService userDetailsService;
+    private final JwtRequestFilter jwtRequestFilter;
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         // place customized userDetailService here
+        auth.userDetailsService(userDetailsService);
     }
+
 
     @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
     @Override
@@ -46,7 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(
                         SessionCreationPolicy.STATELESS
                 );
-
+    http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 }
 
 }
