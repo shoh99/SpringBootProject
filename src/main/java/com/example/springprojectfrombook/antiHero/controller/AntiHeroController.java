@@ -6,10 +6,11 @@ import com.example.springprojectfrombook.antiHero.entity.AntiHeroEntity;
 import com.example.springprojectfrombook.antiHero.service.AntiHeroService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -28,6 +29,8 @@ public class AntiHeroController {
 
     private final AntiHeroService service;
     private final ModelMapper mapper;
+
+    private static final Logger LOGGER =  LoggerFactory.getLogger(AntiHeroController.class);
 
     @GetMapping("/{id}")
     public AntiHeroDto getAntiHeroById(@PathVariable("id") UUID id) {
@@ -65,6 +68,8 @@ public class AntiHeroController {
     @GetMapping
     public List<AntiHeroDto> getAntiHeroes(Pageable pageable) {
         int toSkip = pageable.getPageSize() * pageable.getPageNumber();
+
+        LOGGER.info("Using SLF4J: Getting anti hero list - getAntiHeroes()");
 
         var antiHeroList = StreamSupport
                 .stream(service.findAllAntiHeroes().spliterator(), false)
